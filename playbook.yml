@@ -1,0 +1,44 @@
+---
+- name: 'Provision Java Dev Tools'
+  hosts: default
+  become: true
+  roles:
+    - role: geerlingguy.docker
+      docker_users:
+        - vagrant
+    - role: Comcast.sdkman
+      sdkman_user: vagrant
+      sdkman_group: vagrant
+      sdkman_auto_answer: true
+      sdkman_update: true
+      sdkman_install_packages:
+        - { candidate: java, version: 8.0.252.hs-adpt }
+        - { candidate: java, version: 11.0.7-open }
+        - { candidate: maven, version: 3.5.0 }
+        - { candidate: gradle, version: '6.3' }
+      sdkman_defaults:
+        java: 11.0.7-open
+        maven: 3.5.0
+        gradle: '6.3'
+      sdkman_flush_caches_before:
+        - temp
+      sdkman_flush_caches_after:
+        - archives
+        - broadcast
+        - candidates
+        - temp
+      sdkman_offline_mode: false
+      sdkman_update_alternatives:
+        - candidate: java
+          name: java
+          link: /usr/bin/java
+        - candidate: java
+          name: javac
+          link: /usr/bin/javac
+  tasks:
+    - name: Install utility packages
+      apt:
+        update_cache: yes
+        pkg:
+        - unzip
+        - jq

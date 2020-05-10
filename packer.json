@@ -1,0 +1,18 @@
+{
+  "builders": [
+    {
+      "communicator": "ssh",
+      "source_path": "hashicorp/bionic64",
+      "provider": "virtualbox",
+      "add_force": true,
+      "type": "vagrant"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "ansible",
+      "galaxy_file": "requirements.yml",
+      "playbook_file": "playbook.yml"
+    }
+  ]
+}
